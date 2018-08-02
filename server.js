@@ -35,6 +35,34 @@ app.get("/words/:difficulty", (req, res) => {
   });
 });
 
+app.post("/words", (req, res) => {
+  Words.findOne({ word: req.body.word }).then(currentWord => {
+    console.log(currentWord);
+    if (currentWord) {
+      console.log("error word already exist: ", currentWord.word);
+      res.status(208).send({
+        error: true,
+        message: `Word "${currentWord.word}" already exist`
+      });
+    } else {
+      const word = Object.assign({}, req.body, {
+        word: req.body.word,
+        difficulty: req.body.difficulty
+      });
+      new Words(word).save((err, newWord) => {
+        if (err) {
+          return err;
+        }
+        console.log("created new word: ", newWord);
+        res.status(201).send({
+          error: false,
+          message: `Word "${newWord.word}" succesfully added`
+        });
+      });
+    }
+  });
+});
+
 app.listen(3001, () => {
   console.log("BE of hangman-game listening on port 3001, Ctrl+C to stop");
 });
