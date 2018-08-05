@@ -12,7 +12,7 @@ const app = express();
 
 const corsOptions = {
   credentials: true,
-  origin: ["http://localhost:3000"]
+  origin: ["http://gracious-johnson-fba7d0.netlify.com/"]
 };
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
