@@ -3,8 +3,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const keys = require("./config/keys");
 const bodyParser = require("body-parser");
+const shortid = require("shortid-36");
 
 const Words = require("./model/words-model");
+const Scores = require("./model/score-model");
 
 // const allwords = "./db/allwords";
 
@@ -14,9 +16,9 @@ const corsOptions = {
   credentials: true,
   origin: [
     // "http://gracious-johnson-fba7d0.netlify.com/",
-    // "http://localhost:3000",
-    "http://hangman.42.gy",
-    "https://hangman.42.gy"
+    "http://localhost:3000"
+    // "http://hangman.42.gy",
+    // "https://hangman.42.gy"
   ]
 };
 app.use(cors(corsOptions));
@@ -36,6 +38,13 @@ app.get("/", (req, res) => {
 app.get("/words/:difficulty", (req, res) => {
   res.append("Content-Type", "application/json");
   Words.find({ difficulty: req.params.difficulty }).then(data => {
+    res.send(data.filter(data => data));
+  });
+});
+
+app.get("/scores", (req, res) => {
+  res.append("Content-Type", "application/json");
+  Scores.find().then(data => {
     res.send(data.filter(data => data));
   });
 });
@@ -65,6 +74,36 @@ app.post("/words", (req, res) => {
         });
       });
     }
+  });
+});
+
+app.post("/scores", (req, res) => {
+  // Scores.findOne({ player: req.body.player }).then(currentScore => {
+  //   console.log(currentScore);
+  //   if (currentScore) {
+  //     console.log("error word already exist: ", currentScore.word);
+  //     res.status(208).send({
+  //       error: true,
+  //       message: `Word "${currentScore.word}" already exist`
+  //     });
+  //   } else {
+  const score = Object.assign({}, req.body, {
+    score: req.body.score,
+    player: req.body.player,
+    date: req.body.date,
+    id: shortid.generate()
+  });
+  new Scores(score).save((err, newScore) => {
+    if (err) {
+      return err;
+    }
+    console.log("created new score: ", newScore);
+    res.status(201).send({
+      error: false,
+      message: `Score of "${newScore.player}" succesfully added`
+    });
+    // });
+    // }
   });
 });
 
