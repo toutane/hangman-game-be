@@ -90,8 +90,8 @@ app.post("/scores", (req, res) => {
   const score = Object.assign({}, req.body, {
     score: req.body.score,
     player: req.body.player,
-    date: req.body.date,
-    id: shortid.generate()
+    date: req.body.date
+    // id: shortid.generate()
   });
   new Scores(score).save((err, newScore) => {
     if (err) {
