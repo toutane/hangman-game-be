@@ -17,7 +17,7 @@ const corsOptions = {
   credentials: true,
   origin: [
     // "http://gracious-johnson-fba7d0.netlify.com/",
-    "http://localhost:3000",
+    // "http://localhost:3000",
     "http://hangman.42.gy"
     // "https://hangman.42.gy"
   ]
