@@ -33,7 +33,7 @@ mongoose.connect(
 );
 
 app.get("/", (req, res) => {
-  res.send("Hangman Game Backend 🕶");
+  res.send("Hangman-game BACKEND 🐛");
 });
 
 app.get("/words/:difficulty", (req, res) => {
