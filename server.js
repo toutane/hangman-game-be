@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const keys = require("./config/keys");
 const bodyParser = require("body-parser");
 const shortid = require("shortid-36");
+const moment = require("moment");
 
 const Words = require("./model/words-model");
 const Scores = require("./model/score-model");
@@ -44,7 +45,7 @@ app.get("/words/:difficulty", (req, res) => {
 
 app.get("/scores", (req, res) => {
   res.append("Content-Type", "application/json");
-  Scores.find().then(data => {
+  Scores.find({ date: moment().format("L") }).then(data => {
     res.send(data.filter(data => data));
   });
 });
@@ -60,7 +61,7 @@ app.post("/words", (req, res) => {
       });
     } else {
       const word = Object.assign({}, req.body, {
-        word: req.body.word,
+        word: req.body.word.trim(),
         difficulty: req.body.difficulty
       });
       new Words(word).save((err, newWord) => {
