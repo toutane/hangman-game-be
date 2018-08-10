@@ -18,8 +18,8 @@ const corsOptions = {
   origin: [
     // "http://gracious-johnson-fba7d0.netlify.com/",
     // "http://localhost:3000",
-    "http://hangman.42.gy"
-    // "https://hangman.42.gy"
+    "http://hangman.42.gy",
+    "https://hangman.42.gy"
   ]
 };
 app.use(cors(corsOptions));
